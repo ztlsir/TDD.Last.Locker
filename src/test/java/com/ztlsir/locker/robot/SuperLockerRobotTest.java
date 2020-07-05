@@ -5,10 +5,12 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.LockerFullException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
+import static com.ztlsir.locker.fixture.LockerFixture.LOCKER_FULL_MSG;
 import static com.ztlsir.locker.fixture.LockerFixture.createLSizeLocker;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
@@ -46,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 获得一张有效票据，包存到第1个Locker
  * <p>
- * todo Given SuperLockerRobot管理2个L号Locker，容量分别为：5，5，余量分别为：0，0
+ * done Given SuperLockerRobot管理2个L号Locker，容量分别为：5，5，余量分别为：0，0
  * When 存包
  * Then 存包失败，提示Locker已满
  * <p>
@@ -167,5 +169,14 @@ public class SuperLockerRobotTest {
         assertNotNull(ticket);
         Bag bag = firstLocker.takeBag(ticket);
         assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_throw_locker_full_exception_when_save_bag_given_super_manage_2_full_l_size_lockers() {
+        SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(5, 0), createLSizeLocker(5, 0)));
+        Bag preSaveBag = new Bag();
+
+        LockerFullException exception = assertThrows(LockerFullException.class, () -> robot.saveBag(preSaveBag));
+        assertEquals(LOCKER_FULL_MSG, exception.getMessage());
     }
 }
