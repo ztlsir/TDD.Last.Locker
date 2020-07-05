@@ -13,6 +13,7 @@ import java.util.List;
 public class PrimaryLockerRobot {
     private static final String CONFIG_FAILED_MSG = "请配置M号Locker";
     private static final BagSize SUPPORT_BAG_SIZE = BagSize.M;
+    private static final String BAG_SIZE_MISMATCHING_MSG = "仅支持包尺寸为M的票据";
     private List<Locker> lockers;
 
     public PrimaryLockerRobot(List<Locker> lockers) {
@@ -32,11 +33,19 @@ public class PrimaryLockerRobot {
     }
 
     public Bag takeBag(Ticket ticket) {
+        if (!this.isMatchingBagSize(ticket)) {
+            throw new IllegalTicketException(BAG_SIZE_MISMATCHING_MSG);
+        }
+
         return this.lockers.stream()
                 .filter(locker -> locker.contains(ticket))
                 .findFirst()
                 .orElseThrow(IllegalTicketException::new)
                 .takeBag(ticket);
+    }
+
+    private boolean isMatchingBagSize(Ticket ticket) {
+        return ticket.getBagSize() == SUPPORT_BAG_SIZE;
     }
 
     private boolean isSupportLockers(List<Locker> lockers) {

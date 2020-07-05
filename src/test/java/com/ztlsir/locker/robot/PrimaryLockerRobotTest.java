@@ -27,11 +27,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given PrimaryLockerRobot管理2个M号Locker，一张包存在第二个Locker的有效票据 When 取包 Then 取包成功
  * done Given 一张M号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
  * done Given 一张已取过包M号Locker的的票据 When 取包 Then 取包失败，提示非法票据
- * todo Given 一张S号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据
+ * done Given 一张S号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据
  * todo Given 一张L号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据
  */
 class PrimaryLockerRobotTest {
     private static final String CONFIG_FAILED_MSG = "请配置M号Locker";
+    private static final String BAG_SIZE_MISMATCHING_MSG = "仅支持包尺寸为M的票据";
 
     @Test
     void should_config_success_when_config_1_m_size_locker_given_1_primary_locker_robot() {
@@ -151,5 +152,15 @@ class PrimaryLockerRobotTest {
                 IllegalTicketException.class,
                 () -> robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize())));
         assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_bag_given_one_s_size_useful_ticket() {
+        PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(4, 3), createMSizeLocker(6, 4)));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.S)));
+        assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
     }
 }

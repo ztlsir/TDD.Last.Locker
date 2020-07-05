@@ -14,7 +14,7 @@ public class Ticket {
         this.bagSize = bagSize;
     }
 
-    static String createId() {
+    public static String createId() {
         return UUID.randomUUID().toString();
     }
 
