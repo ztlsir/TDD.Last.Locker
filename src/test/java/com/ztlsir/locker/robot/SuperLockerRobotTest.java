@@ -2,16 +2,20 @@ package com.ztlsir.locker.robot;
 
 import com.ztlsir.locker.Locker;
 import com.ztlsir.locker.bag.BagSize;
+import com.ztlsir.locker.exception.ConfigFailedException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * done Given 一个SuperLockerRobot
  * When 配置1个L号Locker
  * Then 配置成功
  * <p>
- * todo Given 一个SuperLockerRobot
+ * done Given 一个SuperLockerRobot
  * When 配置1个S号Locker
  * Then 配置失败，提示请配置L号Locker
  * <p>
@@ -68,10 +72,22 @@ import java.util.Collections;
  * Then 取包失败，提示仅支持包尺寸为L的票据
  */
 public class SuperLockerRobotTest {
+    private static final String CONFIG_FAILED_MSG = "请配置L号Locker";
+
     @Test
     void should_config_success_when_config_1_l_size_locker_given_1_super_locker_robot() {
         Locker lSizeLocker = new Locker(5, BagSize.L);
 
         SuperLockerRobot robot = new SuperLockerRobot(Collections.singletonList(lSizeLocker));
+    }
+
+    @Test
+    void should_throw_config_failed_exception_when_config_1_s_size_locker_given_1_super_locker_robot() {
+        Locker sSizeLocker = new Locker(5, BagSize.S);
+
+        ConfigFailedException exception = assertThrows(
+                ConfigFailedException.class,
+                () -> new SuperLockerRobot(Collections.singletonList(sSizeLocker)));
+        assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
     }
 }
