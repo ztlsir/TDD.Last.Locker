@@ -14,14 +14,19 @@ public class LockerRobotManager {
 
     private final Locker locker;
     private final PrimaryLockerRobot primaryLockerRobot;
+    private final SuperLockerRobot superLockerRobot;
 
-    public LockerRobotManager(Locker locker, PrimaryLockerRobot primaryLockerRobot, SuperLockerRobot superLockerRobot) {
+    public LockerRobotManager(
+            Locker locker,
+            PrimaryLockerRobot primaryLockerRobot,
+            SuperLockerRobot superLockerRobot) {
         if (!this.isSupportLocker(locker)) {
             throw new ConfigFailedException(CONFIG_FAILED_MSG);
         }
 
         this.locker = locker;
         this.primaryLockerRobot = primaryLockerRobot;
+        this.superLockerRobot = superLockerRobot;
     }
 
     private boolean isSupportLocker(Locker locker) {
@@ -34,6 +39,8 @@ public class LockerRobotManager {
                 return this.locker.saveBag(bag);
             case M:
                 return this.primaryLockerRobot.saveBag(bag);
+            case L:
+                return this.superLockerRobot.saveBag(bag);
         }
 
         return null;

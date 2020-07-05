@@ -35,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 获得一张有效票据，包存到PrimaryLockerRobot管理的Locker中
  * <p>
- * todo Given LockerRobotManager管理的Locker和Robot都未满，一个L号包
+ * done Given LockerRobotManager管理的Locker和Robot都未满，一个L号包
  * When 存包
  * Then 获得一张有效票据，包存到SuperLockerRobot管理的Locker中
  * <p>
@@ -143,6 +143,22 @@ public class LockerRobotManagerTest {
 
         assertNotNull(ticket);
         Bag bag = primaryLockerRobot.takeBag(ticket);
+        assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_save_in_super_when_save_bag_given_locker_robot_manager_manage_available_locker_and_robot_and_one_l_size_bag() {
+        SuperLockerRobot superLockerRobot = new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L)));
+        LockerRobotManager manager = new LockerRobotManager(
+                createSSizeLocker(5, 4),
+                new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                superLockerRobot);
+        Bag preSaveBag = new Bag(BagSize.L);
+
+        Ticket ticket = manager.saveBag(preSaveBag);
+
+        assertNotNull(ticket);
+        Bag bag = superLockerRobot.takeBag(ticket);
         assertEquals(preSaveBag, bag);
     }
 }
