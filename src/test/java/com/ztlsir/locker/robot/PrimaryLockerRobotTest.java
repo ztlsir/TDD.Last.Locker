@@ -65,7 +65,7 @@ class PrimaryLockerRobotTest {
     void should_save_in_1st_locker_when_save_bag_given_primary_manage_2_m_size_available_lockers() {
         Locker firstLocker = new Locker(5, BagSize.M);
         PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(firstLocker, new Locker(6, BagSize.M)));
-        Bag preSaveBag = new Bag(BagSize.M);
+        Bag preSaveBag = new Bag();
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -78,7 +78,7 @@ class PrimaryLockerRobotTest {
     void should_save_in_2nd_locker_when_save_bag_given_primary_manage_2_m_size_lockers_and_1st_is_full_and_2nd_is_available() {
         Locker secondLocker = new Locker(5, BagSize.M);
         PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(6, 0), secondLocker));
-        Bag preSaveBag = new Bag(BagSize.M);
+        Bag preSaveBag = new Bag();
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -91,7 +91,7 @@ class PrimaryLockerRobotTest {
     void should_save_in_1st_locker_when_save_bag_given_primary_manage_2_m_size_lockers_and_1st_is_available_and_2nd_is_full() {
         Locker firstLocker = new Locker(5, BagSize.M);
         PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(firstLocker, createMSizeLocker(6, 0)));
-        Bag preSaveBag = new Bag(BagSize.M);
+        Bag preSaveBag = new Bag();
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -103,7 +103,7 @@ class PrimaryLockerRobotTest {
     @Test
     void should_throw_locker_full_exception_when_save_bag_given_primary_manage_2_m_size_full_lockers() {
         PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(4, 0), createMSizeLocker(6, 0)));
-        Bag preSaveBag = new Bag(BagSize.M);
+        Bag preSaveBag = new Bag();
 
         LockerFullException exception = assertThrows(LockerFullException.class, () -> robot.saveBag(preSaveBag));
         assertEquals(LOCKER_FULL_MSG, exception.getMessage());
@@ -112,7 +112,7 @@ class PrimaryLockerRobotTest {
     @Test
     void should_take_bag_when_take_bag_given_primary_manage_two_locker_and_one_useful_ticket_that_bag_is_saved_in_1st_locker() {
         PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(4, 3), createMSizeLocker(6, 4)));
-        Bag preSaveBag = new Bag(BagSize.S);
+        Bag preSaveBag = new Bag();
         Ticket ticket = robot.saveBag(preSaveBag);
 
         Bag bag = robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
@@ -123,7 +123,7 @@ class PrimaryLockerRobotTest {
     @Test
     void should_take_bag_when_take_bag_given_primary_manage_two_locker_and_one_useful_ticket_that_bag_is_saved_in_2nd_locker() {
         PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(4, 0), createMSizeLocker(6, 4)));
-        Bag preSaveBag = new Bag(BagSize.S);
+        Bag preSaveBag = new Bag();
         Ticket ticket = robot.saveBag(preSaveBag);
 
         Bag bag = robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
@@ -144,7 +144,7 @@ class PrimaryLockerRobotTest {
     @Test
     void should_throw_illegal_ticket_exception_when_take_bag_given_one_had_taken_ticket() {
         PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(4, 0), createMSizeLocker(6, 4)));
-        Bag preSaveBag = new Bag(BagSize.S);
+        Bag preSaveBag = new Bag();
         Ticket ticket = robot.saveBag(preSaveBag);
         robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
 

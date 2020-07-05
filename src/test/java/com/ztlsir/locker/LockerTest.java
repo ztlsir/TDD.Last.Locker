@@ -24,7 +24,7 @@ class LockerTest {
     @Test
     void should_return_available_ticket_when_save_bag_given_one_available_s_size_locker_and_one_s_bag() {
         Locker locker = createSSizeLocker(5, 5);
-        Bag preSaveBag = new Bag(BagSize.S);
+        Bag preSaveBag = new Bag();
 
         Ticket ticket = locker.saveBag(preSaveBag);
 
@@ -34,7 +34,7 @@ class LockerTest {
     @Test
     void should_take_bag_when_take_bag_given_one_useful_ticket_and_one_s_size_locker() {
         Locker locker = createSSizeLocker(5, 5);
-        Bag preSaveBag = new Bag(BagSize.S);
+        Bag preSaveBag = new Bag();
         Ticket ticket = locker.saveBag(preSaveBag);
 
         Bag bag = locker.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
@@ -45,7 +45,7 @@ class LockerTest {
     @Test
     void should_throw_locker_full_exception_when_save_bag_given_s_size_locker_is_full() {
         Locker locker = createSSizeLocker(5, 0);
-        Bag preSaveBag = new Bag(BagSize.S);
+        Bag preSaveBag = new Bag();
 
         LockerFullException exception = assertThrows(
                 LockerFullException.class,
@@ -66,7 +66,7 @@ class LockerTest {
     @Test
     void should_throw_ilLegal_ticket_exception_when_take_bag_given_had_taken_ticket_and_one_s_size_locker() {
         Locker locker = createSSizeLocker(5, 5);
-        Bag preSaveBag = new Bag(BagSize.S);
+        Bag preSaveBag = new Bag();
         Ticket ticket = locker.saveBag(preSaveBag);
         locker.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
 
