@@ -2,16 +2,20 @@ package com.ztlsir.locker.robot;
 
 import com.ztlsir.locker.Locker;
 import com.ztlsir.locker.bag.BagSize;
+import com.ztlsir.locker.exception.ConfigFailedException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * done Given 一个LockerRobotManager
  * When 配置1个S号Locker，配置1个PrimaryLockerRobot，配置1个SuperLockerRobot
  * Then 配置成功
  * <p>
- * todo Given 一个LockerRobotManager
+ * done Given 一个LockerRobotManager
  * When 配置1个M号Locker，配置1个PrimaryLockerRobot，配置1个SuperLockerRobot
  * Then 配置失败，提示请配置S号Locker
  * <p>
@@ -68,6 +72,8 @@ import java.util.Collections;
  * Then 取包失败，提示非法票据
  */
 public class LockerRobotManagerTest {
+    private static final String CONFIG_FAILED_MSG = "请配置S号Locker";
+
     @Test
     void should_config_success_when_config_1_s_size_locker_given_1_locker_robot_manager() {
         Locker sSizeLocker = new Locker(5, BagSize.S);
@@ -76,5 +82,18 @@ public class LockerRobotManagerTest {
                 sSizeLocker,
                 new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
                 new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
+    }
+
+    @Test
+    void should_throw_config_failed_exception_when_config_1_m_size_locker_given_1_locker_robot_manager() {
+        Locker mSizeLocker = new Locker(5, BagSize.M);
+
+        ConfigFailedException exception = assertThrows(
+                ConfigFailedException.class,
+                () -> new LockerRobotManager(
+                        mSizeLocker,
+                        new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                        new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L)))));
+        assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
     }
 }
