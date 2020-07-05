@@ -23,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given PrimaryLockerRobot管理2个M号已满的Locker，第2个Locker未满 When 存包 Then 获得一张有效票据，包存到第2个Locker
  * done Given PrimaryLockerRobot管理2个M号Locker，第1个Locker未满，第2个Locker已满 When 存包 Then 获得一张有效票据，包存到第1个Locker
  * done Given PrimaryLockerRobot管理2个M号已满的Locker When 存包 Then 存包失败，提示Locker已满
- * done Given 一张M号Locker的有效票据 When 取包 Then 取包成功
+ * todo Given PrimaryLockerRobot管理2个M号Locker，一张包存在第一个Locker的有效票据 When 取包 Then 取包成功
+ * todo Given PrimaryLockerRobot管理2个M号Locker，一张包存在第二个Locker的有效票据 When 取包 Then 取包成功
  * done Given 一张M号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
  * todo Given 一张已取过包M号Locker的的票据 When 取包 Then 取包失败，提示非法票据
  * todo Given 一张S号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据

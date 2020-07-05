@@ -21,7 +21,8 @@ Given PrimaryLockerRobot管理2个M号未满的Locker When 存包 Then 获得一
 Given PrimaryLockerRobot管理2个M号已满的Locker，第2个Locker未满 When 存包 Then 获得一张有效票据，包存到第2个Locker
 Given PrimaryLockerRobot管理2个M号Locker，第1个Locker未满，第2个Locker已满 When 存包 Then 获得一张有效票据，包存到第1个Locker
 Given PrimaryLockerRobot管理2个M号已满的Locker When 存包 Then 存包失败，提示Locker已满
-Given 一张M号Locker的有效票据 When 取包 Then 取包成功
+Given PrimaryLockerRobot管理2个M号Locker，一张包存在第一个Locker的有效票据 When 取包 Then 取包成功
+Given PrimaryLockerRobot管理2个M号Locker，一张包存在第二个Locker的有效票据 When 取包 Then 取包成功
 Given 一张M号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
 Given 一张已取过包M号Locker的的票据 When 取包 Then 取包失败，提示非法票据
 Given 一张S号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据
@@ -65,7 +66,11 @@ Given SuperLockerRobot管理2个L号Locker，容量分别为：5，5，余量分
 When 存包
 Then 存包失败，提示Locker已满
 
-Given 一张L号Locker的有效票据
+Given SuperLockerRobot管理2个L号Locker，一张包存在第一个Locker的有效票据
+When 取包
+Then 取包成功
+
+Given SuperLockerRobot管理2个L号Locker，一张包存在第二个Locker的有效票据
 When 取包
 Then 取包成功
 
