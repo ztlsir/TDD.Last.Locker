@@ -64,7 +64,7 @@ class LockerTest {
     }
 
     @Test
-    void should_throw_ilLegal_ticket_exception_when_take_bag_given_has_taken_ticket_and_one_s_size_locker() {
+    void should_throw_ilLegal_ticket_exception_when_take_bag_given_had_taken_ticket_and_one_s_size_locker() {
         Locker locker = createSSizeLocker(5, 5);
         Bag preSaveBag = new Bag(BagSize.S);
         Ticket ticket = locker.saveBag(preSaveBag);
