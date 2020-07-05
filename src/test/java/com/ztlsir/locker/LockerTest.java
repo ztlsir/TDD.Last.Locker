@@ -46,7 +46,7 @@ class LockerTest {
     }
 
     @Test
-    void should_throw_locker_full_exception_when_save_package_given_s_size_locker_is_full() {
+    void should_throw_locker_full_exception_when_save_bag_given_s_size_locker_is_full() {
         Locker locker = createSSizeLocker(5, 0);
         Bag preSaveBag = new Bag(BagSize.S);
 
@@ -57,7 +57,7 @@ class LockerTest {
     }
 
     @Test
-    void should_throw_illegal_ticket_exception_when_take_package_given_s_size_locker_fake_ticket_and_one_s_size_locker() {
+    void should_throw_illegal_ticket_exception_when_take_bag_given_s_size_locker_fake_ticket_and_one_s_size_locker() {
         Locker locker = createSSizeLocker(5, 5);
 
         IllegalTicketException exception = assertThrows(
@@ -67,7 +67,7 @@ class LockerTest {
     }
 
     @Test
-    void should_throw_ilLegal_ticket_exception_when_take_package_given_has_taken_ticket_and_one_s_size_locker() {
+    void should_throw_ilLegal_ticket_exception_when_take_bag_given_has_taken_ticket_and_one_s_size_locker() {
         Locker locker = createSSizeLocker(5, 5);
         Bag preSaveBag = new Bag(BagSize.S);
         Ticket ticket = locker.saveBag(preSaveBag);
@@ -80,7 +80,7 @@ class LockerTest {
     }
 
     @Test
-    void should_throw_illegal_ticket_exception_when_take_package_given_m_size_locker_ticket_and_one_s_size_locker() {
+    void should_throw_illegal_ticket_exception_when_take_bag_given_m_size_locker_ticket_and_one_s_size_locker() {
         Locker locker = createSSizeLocker(6, 6);
 
         IllegalTicketException exception = assertThrows(
@@ -90,7 +90,7 @@ class LockerTest {
     }
 
     @Test
-    void should_throw_illegal_ticket_exception_when_take_package_given_l_size_locker_ticket_and_one_s_size_locker() {
+    void should_throw_illegal_ticket_exception_when_take_bag_given_l_size_locker_ticket_and_one_s_size_locker() {
         Locker locker = createSSizeLocker(6, 6);
 
         IllegalTicketException exception = assertThrows(
