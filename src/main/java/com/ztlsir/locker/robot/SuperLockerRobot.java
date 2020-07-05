@@ -5,6 +5,7 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class SuperLockerRobot {
         return this.lockers.stream()
                 .filter(locker -> locker.contains(ticket))
                 .findAny()
-                .get()
+                .orElseThrow(IllegalTicketException::new)
                 .takeBag(ticket);
     }
 

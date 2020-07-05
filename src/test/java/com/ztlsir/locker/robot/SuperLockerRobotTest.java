@@ -5,13 +5,14 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static com.ztlsir.locker.fixture.LockerFixture.LOCKER_FULL_MSG;
-import static com.ztlsir.locker.fixture.LockerFixture.createLSizeLocker;
+import static com.ztlsir.locker.fixture.LockerFixture.*;
+import static com.ztlsir.locker.fixture.LockerFixture.ILLEGAL_TICKET_MSG;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 取包
  * Then 取包成功
  * <p>
- * todo Given 一张L号Locker的伪造票据
+ * done Given 一张L号Locker的伪造票据
  * When 取包
  * Then 取包失败，提示非法票据
  * <p>
@@ -188,6 +189,16 @@ public class SuperLockerRobotTest {
     @Test
     void should_take_bag_when_take_bag_given_super_manage_two_locker_and_one_useful_ticket_that_bag_is_saved_in_2nd_locker() {
         verifyTakeBag(3);
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_bag_given_one_l_size_fake_ticket() {
+        SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(4, 3), createLSizeLocker(6, 4)));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> robot.takeBag(new Ticket(FAKE_TICKET, BagSize.L)));
+        assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
     }
 
     private void verifyTakeBag(int firstLockerRemain) {
