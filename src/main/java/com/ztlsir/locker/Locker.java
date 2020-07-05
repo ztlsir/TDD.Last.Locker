@@ -9,13 +9,13 @@ import java.util.HashMap;
 
 public class Locker {
     private static final String BAG_SIZE_MISMATCHING_MSG = "仅支持S号大小的票据";
-    private final BagSize bagSize;
+    private final BagSize supportBagSize;
     private final int capacity;
     private final HashMap<Ticket, Bag> bags;
 
-    public Locker(int capacity, BagSize bagSize) {
+    public Locker(int capacity, BagSize supportBagSize) {
         this.capacity = capacity;
-        this.bagSize = bagSize;
+        this.supportBagSize = supportBagSize;
 
         this.bags = new HashMap<>();
     }
@@ -25,7 +25,7 @@ public class Locker {
             throw new LockerFullException();
         }
 
-        Ticket ticket = new Ticket(Ticket.createId(), this.bagSize);
+        Ticket ticket = new Ticket(Ticket.createId(), this.supportBagSize);
         this.bags.put(ticket, bag);
 
         return ticket;
@@ -44,7 +44,7 @@ public class Locker {
     }
 
     private boolean isMatchingBagSize(Ticket ticket) {
-        return ticket.getBagSize() == this.bagSize;
+        return ticket.getBagSize() == this.supportBagSize;
     }
 
     private boolean isFull() {
@@ -57,5 +57,9 @@ public class Locker {
 
     private boolean contains(Ticket ticket) {
         return this.bags.containsKey(ticket);
+    }
+
+    public BagSize getSupportBagSize() {
+        return this.supportBagSize;
     }
 }
