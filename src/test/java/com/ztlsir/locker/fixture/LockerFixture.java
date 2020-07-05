@@ -6,6 +6,8 @@ import com.ztlsir.locker.bag.BagSize;
 
 public class LockerFixture {
     public static final String LOCKER_FULL_MSG = "Locker已满";
+    public static final String FAKE_TICKET = "fake_ticket";
+    public static final String ILLEGAL_TICKET_MSG = "非法票据";
 
     public static Locker createSSizeLocker(int capacity, int remain) {
         return createLocker(capacity, remain, BagSize.S);

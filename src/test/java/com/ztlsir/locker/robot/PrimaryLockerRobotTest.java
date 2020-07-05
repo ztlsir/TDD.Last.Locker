@@ -5,6 +5,7 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given PrimaryLockerRobot管理2个M号Locker，第1个Locker未满，第2个Locker已满 When 存包 Then 获得一张有效票据，包存到第1个Locker
  * done Given PrimaryLockerRobot管理2个M号已满的Locker When 存包 Then 存包失败，提示Locker已满
  * done Given 一张M号Locker的有效票据 When 取包 Then 取包成功
- * todo Given 一张M号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
+ * done Given 一张M号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
  * todo Given 一张已取过包M号Locker的的票据 When 取包 Then 取包失败，提示非法票据
  * todo Given 一张S号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据
  * todo Given 一张L号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据
@@ -115,5 +116,15 @@ class PrimaryLockerRobotTest {
         Bag bag = robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
 
         assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_bag_given_one_m_size_fake_ticket() {
+        PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(4, 3), createMSizeLocker(6, 4)));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> robot.takeBag(new Ticket(FAKE_TICKET, BagSize.M)));
+        assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
     }
 }

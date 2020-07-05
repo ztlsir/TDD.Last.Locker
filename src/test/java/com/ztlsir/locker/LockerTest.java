@@ -6,8 +6,7 @@ import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 import org.junit.jupiter.api.Test;
 
-import static com.ztlsir.locker.fixture.LockerFixture.LOCKER_FULL_MSG;
-import static com.ztlsir.locker.fixture.LockerFixture.createSSizeLocker;
+import static com.ztlsir.locker.fixture.LockerFixture.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -20,8 +19,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given 一张L号Locker的有效票据,一个S号Locker When 取包 Then 取包失败，提示仅支持S号大小的票据
  */
 class LockerTest {
-    private static final String ILLEGAL_TICKET_MSG = "非法票据";
-    private static final String FAKE_TICKET = "fake_ticket";
     private static final String BAG_SIZE_MISMATCHING_MSG = "仅支持S号大小的票据";
 
     @Test
