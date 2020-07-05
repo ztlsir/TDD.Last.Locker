@@ -8,6 +8,7 @@ import com.ztlsir.locker.exception.LockerFullException;
 import java.util.HashMap;
 
 public class Locker {
+    private static final String BAG_SIZE_MISMATCHING_MSG = "仅支持S号大小的票据";
     private final BagSize bagSize;
     private final int capacity;
     private final HashMap<Ticket, Bag> bags;
@@ -31,11 +32,19 @@ public class Locker {
     }
 
     public Bag takeBag(Ticket ticket) {
+        if (!this.isMatchingBagSize(ticket)) {
+            throw new IllegalTicketException(BAG_SIZE_MISMATCHING_MSG);
+        }
+
         if (!this.contains(ticket)) {
             throw new IllegalTicketException();
         }
 
         return this.bags.remove(ticket);
+    }
+
+    private boolean isMatchingBagSize(Ticket ticket) {
+        return ticket.getBagSize() == this.bagSize;
     }
 
     private boolean isFull() {
