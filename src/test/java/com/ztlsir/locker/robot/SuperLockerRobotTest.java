@@ -69,7 +69,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 取包
  * Then 取包失败，提示非法票据
  * <p>
- * todo Given 一张S号Locker的有效票据
+ * done Given 一张S号Locker的有效票据
  * When 取包
  * Then 取包失败，提示仅支持包尺寸为L的票据
  * <p>
@@ -212,6 +212,16 @@ public class SuperLockerRobotTest {
                 IllegalTicketException.class,
                 () -> robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize())));
         assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_bag_given_one_s_size_fake_ticket() {
+        SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(4, 3), createLSizeLocker(6, 4)));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.S)));
+        assertEquals("仅支持包尺寸为L的票据", exception.getMessage());
     }
 
     private void verifyTakeBag(int firstLockerRemain) {

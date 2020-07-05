@@ -15,6 +15,7 @@ import java.util.List;
 public class SuperLockerRobot {
     private static final String CONFIG_FAILED_MSG = "请配置L号Locker";
     private static final BagSize SUPPORT_BAG_SIZE = BagSize.L;
+    private static final String BAG_SIZE_MISMATCHING_MSG = "仅支持包尺寸为L的票据";
     private List<Locker> lockers;
 
 
@@ -35,11 +36,19 @@ public class SuperLockerRobot {
     }
 
     public Bag takeBag(Ticket ticket) {
+        if (!isMatchingBagSize(ticket)) {
+            throw new IllegalTicketException(BAG_SIZE_MISMATCHING_MSG);
+        }
+
         return this.lockers.stream()
                 .filter(locker -> locker.contains(ticket))
                 .findAny()
                 .orElseThrow(IllegalTicketException::new)
                 .takeBag(ticket);
+    }
+
+    private boolean isMatchingBagSize(Ticket ticket) {
+        return ticket.getBagSize() == SUPPORT_BAG_SIZE;
     }
 
     private boolean isSupportLockers(List<Locker> lockers) {
