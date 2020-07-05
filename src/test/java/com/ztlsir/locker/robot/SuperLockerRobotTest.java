@@ -73,12 +73,13 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 取包
  * Then 取包失败，提示仅支持包尺寸为L的票据
  * <p>
- * todo Given 一张M号Locker的有效票据
+ * done Given 一张M号Locker的有效票据
  * When 取包
  * Then 取包失败，提示仅支持包尺寸为L的票据
  */
 public class SuperLockerRobotTest {
     private static final String CONFIG_FAILED_MSG = "请配置L号Locker";
+    private static final String BAG_SIZE_MISMATCHING_MSG = "仅支持包尺寸为L的票据";
 
     @Test
     void should_config_success_when_config_1_l_size_locker_given_1_super_locker_robot() {
@@ -221,7 +222,17 @@ public class SuperLockerRobotTest {
         IllegalTicketException exception = assertThrows(
                 IllegalTicketException.class,
                 () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.S)));
-        assertEquals("仅支持包尺寸为L的票据", exception.getMessage());
+        assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_bag_given_one_m_size_fake_ticket() {
+        SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(4, 3), createLSizeLocker(6, 4)));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.M)));
+        assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
     }
 
     private void verifyTakeBag(int firstLockerRemain) {
