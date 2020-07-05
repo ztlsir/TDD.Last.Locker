@@ -19,6 +19,7 @@ public class SuperLockerRobot extends BaseLockerRobot {
         super(CONFIG_FAILED_MSG, SUPPORT_BAG_SIZE, BAG_SIZE_MISMATCHING_MSG, lockers);
     }
 
+    @Override
     public Ticket saveBag(Bag bag) {
         return this.lockers.stream()
                 .filter(locker -> !locker.isFull())

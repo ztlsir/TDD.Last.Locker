@@ -18,6 +18,7 @@ public class PrimaryLockerRobot extends BaseLockerRobot {
 
     }
 
+    @Override
     public Ticket saveBag(Bag bag) {
         return this.lockers.stream()
                 .filter(locker -> !locker.isFull())

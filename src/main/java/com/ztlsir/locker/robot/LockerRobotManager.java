@@ -1,6 +1,7 @@
 package com.ztlsir.locker.robot;
 
 import com.ztlsir.locker.Locker;
+import com.ztlsir.locker.Storable;
 import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
@@ -34,24 +35,22 @@ public class LockerRobotManager {
     }
 
     public Ticket saveBag(Bag bag) {
-        switch (bag.getBagSize()) {
-            case S:
-                return this.locker.saveBag(bag);
-            case M:
-                return this.primaryLockerRobot.saveBag(bag);
-            case L:
-                return this.superLockerRobot.saveBag(bag);
-        }
+        return getStorableByBagSize(bag.getBagSize()).saveBag(bag);
 
-        return null;
     }
 
     public Bag takeBag(Ticket ticket) {
-        switch (ticket.getBagSize()) {
+        return getStorableByBagSize(ticket.getBagSize()).takeBag(ticket);
+    }
+
+    private Storable getStorableByBagSize(BagSize bagSize) {
+        switch (bagSize) {
             case S:
-                return this.locker.takeBag(ticket);
+                return this.locker;
             case M:
-                return this.primaryLockerRobot.takeBag(ticket);
+                return this.primaryLockerRobot;
+            case L:
+                return this.superLockerRobot;
         }
 
         return null;
