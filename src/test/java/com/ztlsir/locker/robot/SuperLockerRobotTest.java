@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 获得一张有效票据，包存到第2个Locker
  * <p>
- * todo Given SuperLockerRobot管理2个L号Locker，容量分别为：5，5，余量分别为：0，4
+ * done Given SuperLockerRobot管理2个L号Locker，容量分别为：5，5，余量分别为：0，4
  * When 存包
  * Then 获得一张有效票据，包存到第2个Locker
  * <p>
@@ -134,6 +134,19 @@ public class SuperLockerRobotTest {
     void should_save_in_2nd_locker_when_save_bag_given_super_manage_2_l_size_available_lockers_and_2nd_locker_more_than_1st_locker() {
         Locker secondLocker = createLSizeLocker(5, 4);
         SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(5, 2), secondLocker));
+        Bag preSaveBag = new Bag();
+
+        Ticket ticket = robot.saveBag(preSaveBag);
+
+        assertNotNull(ticket);
+        Bag bag = secondLocker.takeBag(ticket);
+        assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_save_in_2nd_locker_when_save_bag_given_super_manage_2_l_size_lockers_and_1st_locker_is_full_and_2nd_is_available() {
+        Locker secondLocker = createLSizeLocker(5, 4);
+        SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(5, 0), secondLocker));
         Bag preSaveBag = new Bag();
 
         Ticket ticket = robot.saveBag(preSaveBag);
