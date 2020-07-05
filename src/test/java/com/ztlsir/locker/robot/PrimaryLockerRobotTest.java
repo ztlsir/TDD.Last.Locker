@@ -7,7 +7,6 @@ import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import static com.ztlsir.locker.fixture.LockerFixture.createMSizeLocker;
@@ -20,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given 一个PrimaryLockerRobot When 配置1个L号Locker Then 配置失败，提示请配置M号Locker
  * done Given PrimaryLockerRobot管理2个M号未满的Locker When 存包 Then 获得一张有效票据，包存到第1个Locker
  * done Given PrimaryLockerRobot管理2个M号已满的Locker，第2个Locker未满 When 存包 Then 获得一张有效票据，包存到第2个Locker
- * todo Given PrimaryLockerRobot管理2个M号Locker，第1个Locker未满，第2个Locker已满 When 存包 Then 获得一张有效票据，包存到第1个Locker
+ * done Given PrimaryLockerRobot管理2个M号Locker，第1个Locker未满，第2个Locker已满 When 存包 Then 获得一张有效票据，包存到第1个Locker
  * todo Given PrimaryLockerRobot管理2个M号已满的Locker When 存包 Then 存包失败，提示Locker已满
  * todo Given 一张M号Locker的有效票据 When 取包 Then 取包成功
  * todo Given 一张M号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
@@ -81,6 +80,19 @@ class PrimaryLockerRobotTest {
 
         assertNotNull(ticket);
         Bag bag = secondLocker.takeBag(ticket);
+        assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_save_in_1st_locker_when_save_bag_given_primary_manage_2_m_size_lockers_and_1st_is_available_and_2nd_is_full() {
+        Locker firstLocker = new Locker(5, BagSize.M);
+        PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(firstLocker, createMSizeLocker(6, 0)));
+        Bag preSaveBag = new Bag(BagSize.M);
+
+        Ticket ticket = robot.saveBag(preSaveBag);
+
+        assertNotNull(ticket);
+        Bag bag = firstLocker.takeBag(ticket);
         assertEquals(preSaveBag, bag);
     }
 }
