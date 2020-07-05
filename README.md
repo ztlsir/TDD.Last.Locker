@@ -5,12 +5,12 @@ TDD 结业考试作业
 ### Locker
 ```
 Given 一个未满的S号Locker，一个S号的包 When 存包 Then 存包成功，返回一张有效票据
-Given 一张S号Locker的有效票据 When 取包 Then 取包成功
+Given 一张S号Locker的有效票据,一个S号Locker When 取包 Then 取包成功
 Given 一个已满的S号Locker，一个S号的包 When 存包 Then 存包失败，提示Locker已满
-Given 一张S号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
-Given 一张已取过包S号Locker的票据 When 取包 Then 取包失败，提示非法票据
-Given 一张M号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为S的票据
-Given 一张L号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为S的票据
+Given 一张S号Locker的伪造票据,一个S号Locker When 取包 Then 取包失败，提示非法票据
+Given 一张已取过包S号Locker的票据,一个S号Locker When 取包 Then 取包失败，提示非法票据
+Given 一张M号Locker的有效票据,一个S号Locker When 取包 Then 取包失败，提示仅支持包尺寸为S的票据
+Given 一张L号Locker的有效票据,一个S号Locker When 取包 Then 取包失败，提示仅支持包尺寸为S的票据
 ```
 ### PrimaryLockerRobot
 ```
