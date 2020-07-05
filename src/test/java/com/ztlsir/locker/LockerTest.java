@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given 一张S号Locker的有效票据 When 取包 Then 取包成功
  * done Given 一个已满的S号Locker，一个S号的包 When 存包 Then 存包失败，提示Locker已满
  * done Given 一张S号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
- * todo Given 一张已取过包S号Locker的票据 When 取包 Then 取包失败，提示非法票据
+ * done Given 一张已取过包S号Locker的票据 When 取包 Then 取包失败，提示非法票据
  * todo Given 一张M号Locker的有效票据 When 取包 Then 取包失败，提示仅支持S号大小的票据
  * todo Given 一张L号Locker的有效票据 When 取包 Then 取包失败，提示仅支持S号大小的票据
  */
@@ -62,6 +62,19 @@ class LockerTest {
         IllegalTicketException exception = assertThrows(
                 IllegalTicketException.class,
                 () -> locker.takeBag(new Ticket(FAKE_TICKET, BagSize.S)));
+        assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_ilLegal_ticket_exception_when_take_package_given_has_taken_ticket() {
+        Locker locker = createLocker(5, 5, BagSize.S);
+        Bag preSaveBag = new Bag(BagSize.S);
+        Ticket ticket = locker.saveBag(preSaveBag);
+        locker.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> locker.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize())));
         assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
     }
 

@@ -30,6 +30,14 @@ public class Locker {
         return ticket;
     }
 
+    public Bag takeBag(Ticket ticket) {
+        if (!this.contains(ticket)) {
+            throw new IllegalTicketException();
+        }
+
+        return this.bags.remove(ticket);
+    }
+
     private boolean isFull() {
         return this.bags.size() >= this.getCapacity();
     }
@@ -38,11 +46,7 @@ public class Locker {
         return this.capacity;
     }
 
-    public Bag takeBag(Ticket ticket) {
-        if (!this.bags.containsKey(ticket)) {
-            throw new IllegalTicketException();
-        }
-
-        return this.bags.get(ticket);
+    private boolean contains(Ticket ticket) {
+        return this.bags.containsKey(ticket);
     }
 }
