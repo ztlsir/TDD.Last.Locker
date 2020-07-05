@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * When 配置1个S号Locker
  * Then 配置失败，提示请配置L号Locker
  * <p>
- * todo Given 一个SuperLockerRobot
+ * done Given 一个SuperLockerRobot
  * When 配置1个M号Locker
  * Then 配置失败，提示请配置L号Locker
  * <p>
@@ -88,6 +88,16 @@ public class SuperLockerRobotTest {
         ConfigFailedException exception = assertThrows(
                 ConfigFailedException.class,
                 () -> new SuperLockerRobot(Collections.singletonList(sSizeLocker)));
+        assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_config_failed_exception_when_config_1_m_size_locker_given_1_super_locker_robot() {
+        Locker mSizeLocker = new Locker(5, BagSize.M);
+
+        ConfigFailedException exception = assertThrows(
+                ConfigFailedException.class,
+                () -> new SuperLockerRobot(Collections.singletonList(mSizeLocker)));
         assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
     }
 }
