@@ -7,6 +7,7 @@ import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class SuperLockerRobot {
@@ -24,7 +25,10 @@ public class SuperLockerRobot {
     }
 
     public Ticket saveBag(Bag bag) {
-        return this.lockers.get(0).saveBag(bag);
+        return this.lockers.stream()
+                .max(Comparator.comparing(Locker::getRemain))
+                .get()
+                .saveBag(bag);
     }
 
     private boolean isSupportLockers(List<Locker> lockers) {

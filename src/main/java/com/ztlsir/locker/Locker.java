@@ -62,4 +62,8 @@ public class Locker {
     public BagSize getSupportBagSize() {
         return this.supportBagSize;
     }
+
+    public int getRemain() {
+        return this.getCapacity() - this.bags.size();
+    }
 }
