@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * done Given 一个PrimaryLockerRobot When 配置1个M号Locker Then 配置成功
  * done Given 一个PrimaryLockerRobot When 配置1个S号Locker Then 配置失败，提示请配置M号Locker
- * todo Given 一个PrimaryLockerRobot When 配置1个L号Locker Then 配置失败，提示请配置M号Locker
+ * done Given 一个PrimaryLockerRobot When 配置1个L号Locker Then 配置失败，提示请配置M号Locker
  * todo Given PrimaryLockerRobot管理2个M号未满的Locker When 存包 Then 获得一张有效票据，包存到第1个Locker
  * todo Given PrimaryLockerRobot管理2个M号已满的Locker，第2个Locker未满 When 存包 Then 获得一张有效票据，包存到第2个Locker
  * todo Given PrimaryLockerRobot管理2个M号Locker，第1个Locker未满，第2个Locker已满 When 存包 Then 获得一张有效票据，包存到第1个Locker
@@ -35,6 +35,16 @@ class PrimaryLockerRobotTest {
     @Test
     void should_throw_config_failed_exception_when_config_1_s_size_locker_given_1_primary_locker_robot() {
         Locker sSizeLocker = new Locker(5, BagSize.S);
+
+        ConfigFailedException exception = assertThrows(
+                ConfigFailedException.class,
+                () -> new PrimaryLockerRobot(sSizeLocker));
+        assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_config_failed_exception_when_config_1_l_size_locker_given_1_primary_locker_robot() {
+        Locker sSizeLocker = new Locker(5, BagSize.L);
 
         ConfigFailedException exception = assertThrows(
                 ConfigFailedException.class,
