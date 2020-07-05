@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * When 配置1个M号Locker，配置1个PrimaryLockerRobot，配置1个SuperLockerRobot
  * Then 配置失败，提示请配置S号Locker
  * <p>
- * todo Given 一个LockerRobotManager
+ * done Given 一个LockerRobotManager
  * When 配置1个L号Locker，配置1个PrimaryLockerRobot，配置1个SuperLockerRobot
  * Then 配置失败，提示请配置S号Locker
  * <p>
@@ -92,6 +92,19 @@ public class LockerRobotManagerTest {
                 ConfigFailedException.class,
                 () -> new LockerRobotManager(
                         mSizeLocker,
+                        new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                        new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L)))));
+        assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_config_failed_exception_when_config_1_L_size_locker_given_1_locker_robot_manager() {
+        Locker lSizeLocker = new Locker(5, BagSize.L);
+
+        ConfigFailedException exception = assertThrows(
+                ConfigFailedException.class,
+                () -> new LockerRobotManager(
+                        lSizeLocker,
                         new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
                         new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L)))));
         assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
