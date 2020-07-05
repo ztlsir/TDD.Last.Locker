@@ -5,6 +5,7 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.LockerFullException;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class PrimaryLockerRobot {
         return this.lockers.stream()
                 .filter(locker -> !locker.isFull())
                 .findFirst()
-                .get()
+                .orElseThrow(LockerFullException::new)
                 .saveBag(bag);
     }
 
