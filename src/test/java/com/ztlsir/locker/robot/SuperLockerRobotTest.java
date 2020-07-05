@@ -90,7 +90,7 @@ public class SuperLockerRobotTest {
 
     @Test
     void should_throw_config_failed_exception_when_config_1_s_size_locker_given_1_super_locker_robot() {
-        Locker sSizeLocker = new Locker(5, BagSize.S);
+        Locker sSizeLocker = new Locker(5, BagSize.L);
 
         ConfigFailedException exception = assertThrows(
                 ConfigFailedException.class,
@@ -112,7 +112,7 @@ public class SuperLockerRobotTest {
     void should_save_in_1st_locker_when_save_bag_given_super_manage_2_l_size_available_lockers_and_each_lockers_remain_is_equals() {
         Locker firstLocker = createLSizeLocker(5, 4);
         SuperLockerRobot robot = new SuperLockerRobot(asList(firstLocker, createLSizeLocker(5, 4)));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -125,7 +125,7 @@ public class SuperLockerRobotTest {
     void should_save_in_1st_locker_when_save_bag_given_super_manage_2_l_size_available_lockers_and_1st_locker_more_than_2nd_locker() {
         Locker firstLocker = createLSizeLocker(5, 4);
         SuperLockerRobot robot = new SuperLockerRobot(asList(firstLocker, createLSizeLocker(5, 3)));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -138,7 +138,7 @@ public class SuperLockerRobotTest {
     void should_save_in_2nd_locker_when_save_bag_given_super_manage_2_l_size_available_lockers_and_2nd_locker_more_than_1st_locker() {
         Locker secondLocker = createLSizeLocker(5, 4);
         SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(5, 2), secondLocker));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -151,7 +151,7 @@ public class SuperLockerRobotTest {
     void should_save_in_2nd_locker_when_save_bag_given_super_manage_2_l_size_lockers_and_1st_locker_is_full_and_2nd_is_available() {
         Locker secondLocker = createLSizeLocker(5, 4);
         SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(5, 0), secondLocker));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -164,7 +164,7 @@ public class SuperLockerRobotTest {
     void should_save_in_1st_locker_when_save_bag_given_super_manage_2_l_size_lockers_and_2nd_locker_is_full_and_1st_is_available() {
         Locker firstLocker = createLSizeLocker(5, 3);
         SuperLockerRobot robot = new SuperLockerRobot(asList(firstLocker, createLSizeLocker(5, 0)));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
 
         Ticket ticket = robot.saveBag(preSaveBag);
 
@@ -176,7 +176,7 @@ public class SuperLockerRobotTest {
     @Test
     void should_throw_locker_full_exception_when_save_bag_given_super_manage_2_full_l_size_lockers() {
         SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(5, 0), createLSizeLocker(5, 0)));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
 
         LockerFullException exception = assertThrows(LockerFullException.class, () -> robot.saveBag(preSaveBag));
         assertEquals(LOCKER_FULL_MSG, exception.getMessage());
@@ -205,7 +205,7 @@ public class SuperLockerRobotTest {
     @Test
     void should_throw_illegal_ticket_exception_when_take_bag_given_one_had_taken_ticket() {
         SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(6, 4), createLSizeLocker(6, 4)));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
         Ticket ticket = robot.saveBag(preSaveBag);
         robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
 
@@ -221,7 +221,7 @@ public class SuperLockerRobotTest {
 
         IllegalTicketException exception = assertThrows(
                 IllegalTicketException.class,
-                () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.S)));
+                () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.L)));
         assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
     }
 
@@ -237,7 +237,7 @@ public class SuperLockerRobotTest {
 
     private void verifyTakeBag(int firstLockerRemain) {
         SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(6, firstLockerRemain), createLSizeLocker(6, 4)));
-        Bag preSaveBag = new Bag();
+        Bag preSaveBag = new Bag(BagSize.L);
         Ticket ticket = robot.saveBag(preSaveBag);
 
         Bag bag = robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));

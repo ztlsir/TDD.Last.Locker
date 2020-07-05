@@ -24,7 +24,7 @@ public class LockerFixture {
     private static Locker createLocker(int capacity, int remain, BagSize bagSize) {
         Locker locker = new Locker(capacity, bagSize);
         for (int i = 0; i < capacity - remain; i++) {
-            locker.saveBag(new Bag());
+            locker.saveBag(new Bag(BagSize.S));
         }
 
         return locker;

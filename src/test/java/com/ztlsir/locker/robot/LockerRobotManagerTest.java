@@ -1,14 +1,18 @@
 package com.ztlsir.locker.robot;
 
 import com.ztlsir.locker.Locker;
+import com.ztlsir.locker.Ticket;
+import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.ztlsir.locker.fixture.LockerFixture.createLSizeLocker;
+import static com.ztlsir.locker.fixture.LockerFixture.createSSizeLocker;
+import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * done Given 一个LockerRobotManager
@@ -23,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * When 配置1个L号Locker，配置1个PrimaryLockerRobot，配置1个SuperLockerRobot
  * Then 配置失败，提示请配置S号Locker
  * <p>
- * todo Given LockerRobotManager管理的Locker和Robot都未满，一个S号包
+ * done Given LockerRobotManager管理的Locker和Robot都未满，一个S号包
  * When 存包
  * Then 获得一张有效票据，包存到LockerRobotManager直接管理的Locker中
  * <p>
@@ -108,5 +112,21 @@ public class LockerRobotManagerTest {
                         new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
                         new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L)))));
         assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_save_in_locker_when_save_bag_given_locker_robot_manager_manage_available_locker_and_robot_and_one_s_size_bag() {
+        Locker locker = createSSizeLocker(5, 4);
+        LockerRobotManager robot = new LockerRobotManager(
+                locker,
+                new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
+        Bag preSaveBag = new Bag(BagSize.S);
+
+        Ticket ticket = robot.saveBag(preSaveBag);
+
+        assertNotNull(ticket);
+        Bag bag = locker.takeBag(ticket);
+        assertEquals(preSaveBag, bag);
     }
 }
