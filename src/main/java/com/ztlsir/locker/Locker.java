@@ -47,7 +47,7 @@ public class Locker {
         return ticket.getBagSize() == this.supportBagSize;
     }
 
-    private boolean isFull() {
+    public boolean isFull() {
         return this.bags.size() >= this.getCapacity();
     }
 

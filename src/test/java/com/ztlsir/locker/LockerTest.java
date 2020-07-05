@@ -6,6 +6,7 @@ import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 import org.junit.jupiter.api.Test;
 
+import static com.ztlsir.locker.fixture.LockerFixture.createSSizeLocker;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -97,14 +98,5 @@ class LockerTest {
                 IllegalTicketException.class,
                 () -> locker.takeBag(new Ticket(Ticket.createId(), BagSize.L)));
         assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
-    }
-
-    private Locker createSSizeLocker(int capacity, int remain) {
-        Locker locker = new Locker(capacity, BagSize.S);
-        for (int i = 0; i < capacity - remain; i++) {
-            locker.saveBag(new Bag(BagSize.S));
-        }
-
-        return locker;
     }
 }

@@ -22,7 +22,11 @@ public class PrimaryLockerRobot {
     }
 
     public Ticket saveBag(Bag bag) {
-        return this.lockers.get(0).saveBag(bag);
+        return this.lockers.stream()
+                .filter(locker -> !locker.isFull())
+                .findFirst()
+                .get()
+                .saveBag(bag);
     }
 
     private boolean isSupportLockers(List<Locker> lockers) {
