@@ -5,6 +5,7 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 
 import java.util.List;
@@ -30,15 +31,19 @@ public class PrimaryLockerRobot {
                 .saveBag(bag);
     }
 
+    public Bag takeBag(Ticket ticket) {
+        return this.lockers.stream()
+                .filter(locker -> locker.contains(ticket))
+                .findFirst()
+                .orElseThrow(IllegalTicketException::new)
+                .takeBag(ticket);
+    }
+
     private boolean isSupportLockers(List<Locker> lockers) {
         return lockers.stream().anyMatch(this::isSupportLocker);
     }
 
     private boolean isSupportLocker(Locker locker) {
         return locker.getSupportBagSize() == SUPPORT_BAG_SIZE;
-    }
-
-    public Bag takeBag(Ticket ticket) {
-        return this.lockers.get(0).takeBag(ticket);
     }
 }

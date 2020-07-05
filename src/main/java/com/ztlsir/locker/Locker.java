@@ -55,7 +55,7 @@ public class Locker {
         return this.capacity;
     }
 
-    private boolean contains(Ticket ticket) {
+    public boolean contains(Ticket ticket) {
         return this.bags.containsKey(ticket);
     }
 
