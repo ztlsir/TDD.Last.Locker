@@ -45,4 +45,8 @@ public class LockerRobotManager {
 
         return null;
     }
+
+    public Bag takeBag(Ticket ticket) {
+        return this.locker.takeBag(ticket);
+    }
 }

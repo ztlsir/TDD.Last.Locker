@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 
 import static com.ztlsir.locker.fixture.LockerFixture.*;
-import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -51,7 +50,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 存包失败，提示L号Locker已满
  * <p>
- * todo Given 一张LockerRobotManager管理的S号Locker有效票据
+ * done Given 一张LockerRobotManager管理的S号Locker有效票据
  * When 取包
  * Then 取包成功
  * <p>
@@ -199,5 +198,19 @@ public class LockerRobotManagerTest {
 
         LockerFullException exception = assertThrows(LockerFullException.class, () -> manager.saveBag(preSaveBag));
         assertEquals(LOCKER_FULL_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_take_bag_when_take_bag_given_one_useful_s_size_ticket() {
+        LockerRobotManager manager = new LockerRobotManager(
+                createSSizeLocker(5, 4),
+                new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
+        Bag preSaveBag = new Bag(BagSize.S);
+        Ticket ticket = manager.saveBag(preSaveBag);
+
+        Bag bag = manager.takeBag(ticket);
+
+        assertEquals(preSaveBag, bag);
     }
 }
