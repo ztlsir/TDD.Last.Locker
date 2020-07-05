@@ -2,10 +2,10 @@ package com.ztlsir.locker;
 
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
+import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class Locker {
     private final BagSize bagSize;
@@ -24,7 +24,7 @@ public class Locker {
             throw new LockerFullException();
         }
 
-        Ticket ticket = new Ticket(UUID.randomUUID().toString(), this.bagSize);
+        Ticket ticket = new Ticket(Ticket.createId(), this.bagSize);
         this.bags.put(ticket, bag);
 
         return ticket;
@@ -39,6 +39,10 @@ public class Locker {
     }
 
     public Bag takeBag(Ticket ticket) {
+        if (!this.bags.containsKey(ticket)) {
+            throw new IllegalTicketException();
+        }
+
         return this.bags.get(ticket);
     }
 }

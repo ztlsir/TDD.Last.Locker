@@ -3,6 +3,7 @@ package com.ztlsir.locker;
 import com.ztlsir.locker.bag.BagSize;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Ticket {
     private final String serialNo;
@@ -11,6 +12,10 @@ public class Ticket {
     public Ticket(String serialNo, BagSize bagSize) {
         this.serialNo = serialNo;
         this.bagSize = bagSize;
+    }
+
+    static String createId() {
+        return UUID.randomUUID().toString();
     }
 
     public String getSerialNo() {
