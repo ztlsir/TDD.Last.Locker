@@ -5,6 +5,7 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.IllegalTicketException;
 import com.ztlsir.locker.exception.LockerFullException;
 import org.junit.jupiter.api.Test;
 
@@ -62,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 取包
  * Then 取包成功
  * <p>
- * todo Given 一张S号Locker的伪造票据
+ * done Given 一张S号Locker的伪造票据
  * When 取包
  * Then 取包失败，提示非法票据
  * <p>
@@ -240,5 +241,18 @@ public class LockerRobotManagerTest {
         Bag bag = manager.takeBag(ticket);
 
         assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_bag_given_one_s_size_fake_ticket() {
+        LockerRobotManager manager = new LockerRobotManager(
+                createSSizeLocker(5, 4),
+                new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> manager.takeBag(new Ticket(FAKE_TICKET, BagSize.L)));
+        assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
     }
 }
