@@ -1,5 +1,5 @@
 package com.ztlsir.locker.bag;
 
 public enum BagSize {
-    S, M;
+    S, M, L;
 }

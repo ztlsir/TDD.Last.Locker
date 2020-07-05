@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given 一张S号Locker的伪造票据,一个S号Locker When 取包 Then 取包失败，提示非法票据
  * done Given 一张已取过包S号Locker的票据,一个S号Locker When 取包 Then 取包失败，提示非法票据
  * done Given 一张M号Locker的有效票据,一个S号Locker When 取包 Then 取包失败，提示仅支持S号大小的票据
- * todo Given 一张L号Locker的有效票据,一个S号Locker When 取包 Then 取包失败，提示仅支持S号大小的票据
+ * done Given 一张L号Locker的有效票据,一个S号Locker When 取包 Then 取包失败，提示仅支持S号大小的票据
  */
 class LockerTest {
 
@@ -86,6 +86,16 @@ class LockerTest {
         IllegalTicketException exception = assertThrows(
                 IllegalTicketException.class,
                 () -> locker.takeBag(new Ticket(Ticket.createId(), BagSize.M)));
+        assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_package_given_l_size_locker_ticket_and_one_s_size_locker() {
+        Locker locker = createSSizeLocker(6, 6);
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> locker.takeBag(new Ticket(Ticket.createId(), BagSize.L)));
         assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
     }
 
