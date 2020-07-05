@@ -65,7 +65,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 取包
  * Then 取包失败，提示非法票据
  * <p>
- * todo Given 一张已取过包L号Locker的的票据
+ * done Given 一张已取过包L号Locker的的票据
  * When 取包
  * Then 取包失败，提示非法票据
  * <p>
@@ -198,6 +198,19 @@ public class SuperLockerRobotTest {
         IllegalTicketException exception = assertThrows(
                 IllegalTicketException.class,
                 () -> robot.takeBag(new Ticket(FAKE_TICKET, BagSize.L)));
+        assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_illegal_ticket_exception_when_take_bag_given_one_had_taken_ticket() {
+        SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(6, 4), createLSizeLocker(6, 4)));
+        Bag preSaveBag = new Bag();
+        Ticket ticket = robot.saveBag(preSaveBag);
+        robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
+
+        IllegalTicketException exception = assertThrows(
+                IllegalTicketException.class,
+                () -> robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize())));
         assertEquals(ILLEGAL_TICKET_MSG, exception.getMessage());
     }
 
