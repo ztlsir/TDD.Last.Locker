@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 配置1个M号Locker
  * Then 配置失败，提示请配置L号Locker
  * <p>
- * todo Given SuperLockerRobot管理2个L号Locker，容量分别为：5，5，余量分别为：4，4
+ * done Given SuperLockerRobot管理2个L号Locker，容量分别为：5，5，余量分别为：4，4
  * When 存包
  * Then 获得一张有效票据，包存到第1个Locker
  * <p>
