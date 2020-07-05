@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static com.ztlsir.locker.fixture.LockerFixture.LOCKER_FULL_MSG;
-import static com.ztlsir.locker.fixture.LockerFixture.createMSizeLocker;
+import static com.ztlsir.locker.fixture.LockerFixture.*;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * done Given PrimaryLockerRobot管理2个M号已满的Locker，第2个Locker未满 When 存包 Then 获得一张有效票据，包存到第2个Locker
  * done Given PrimaryLockerRobot管理2个M号Locker，第1个Locker未满，第2个Locker已满 When 存包 Then 获得一张有效票据，包存到第1个Locker
  * done Given PrimaryLockerRobot管理2个M号已满的Locker When 存包 Then 存包失败，提示Locker已满
- * todo Given 一张M号Locker的有效票据 When 取包 Then 取包成功
+ * done Given 一张M号Locker的有效票据 When 取包 Then 取包成功
  * todo Given 一张M号Locker的伪造票据 When 取包 Then 取包失败，提示非法票据
  * todo Given 一张已取过包M号Locker的的票据 When 取包 Then 取包失败，提示非法票据
  * todo Given 一张S号Locker的有效票据 When 取包 Then 取包失败，提示仅支持包尺寸为M的票据
@@ -105,5 +104,16 @@ class PrimaryLockerRobotTest {
 
         LockerFullException exception = assertThrows(LockerFullException.class, () -> robot.saveBag(preSaveBag));
         assertEquals(LOCKER_FULL_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_take_bag_when_take_bag_given_one_m_size_useful_ticket() {
+        PrimaryLockerRobot robot = new PrimaryLockerRobot(asList(createMSizeLocker(4, 3), createMSizeLocker(6, 4)));
+        Bag preSaveBag = new Bag(BagSize.S);
+        Ticket ticket = robot.saveBag(preSaveBag);
+
+        Bag bag = robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
+
+        assertEquals(preSaveBag, bag);
     }
 }

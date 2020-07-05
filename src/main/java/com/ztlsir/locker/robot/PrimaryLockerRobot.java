@@ -37,4 +37,8 @@ public class PrimaryLockerRobot {
     private boolean isSupportLocker(Locker locker) {
         return locker.getSupportBagSize() == SUPPORT_BAG_SIZE;
     }
+
+    public Bag takeBag(Ticket ticket) {
+        return this.lockers.get(0).takeBag(ticket);
+    }
 }
