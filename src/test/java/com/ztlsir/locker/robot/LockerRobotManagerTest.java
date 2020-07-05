@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 存包失败，提示M号Locker已满
  * <p>
- * todo Given LockerRobotManager管理的Locker和PrimaryLockerRobot未满，SuperLockerRobot已满，一个L号包
+ * done Given LockerRobotManager管理的Locker和PrimaryLockerRobot未满，SuperLockerRobot已满，一个L号包
  * When 存包
  * Then 存包失败，提示L号Locker已满
  * <p>
@@ -183,6 +183,19 @@ public class LockerRobotManagerTest {
                 primaryLockerRobot,
                 new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
         Bag preSaveBag = new Bag(BagSize.M);
+
+        LockerFullException exception = assertThrows(LockerFullException.class, () -> manager.saveBag(preSaveBag));
+        assertEquals(LOCKER_FULL_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_throw_locker_full_exception_when_save_bag_given_locker_robot_manager_manage_available_locker_and_primary_and_full_super_and_one_m_size_bag() {
+        SuperLockerRobot superLockerRobot = new SuperLockerRobot(Collections.singletonList(createLSizeLocker(5, 0)));
+        LockerRobotManager manager = new LockerRobotManager(
+                createSSizeLocker(5, 4),
+                new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                superLockerRobot);
+        Bag preSaveBag = new Bag(BagSize.L);
 
         LockerFullException exception = assertThrows(LockerFullException.class, () -> manager.saveBag(preSaveBag));
         assertEquals(LOCKER_FULL_MSG, exception.getMessage());
