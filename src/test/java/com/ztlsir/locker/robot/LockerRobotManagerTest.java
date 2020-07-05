@@ -31,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 获得一张有效票据，包存到LockerRobotManager直接管理的Locker中
  * <p>
- * todo Given LockerRobotManager管理的Locker和Robot都未满，一个M号包
+ * done Given LockerRobotManager管理的Locker和Robot都未满，一个M号包
  * When 存包
  * Then 获得一张有效票据，包存到PrimaryLockerRobot管理的Locker中
  * <p>
@@ -82,7 +82,7 @@ public class LockerRobotManagerTest {
     void should_config_success_when_config_1_s_size_locker_given_1_locker_robot_manager() {
         Locker sSizeLocker = new Locker(5, BagSize.S);
 
-        LockerRobotManager robot = new LockerRobotManager(
+        LockerRobotManager manager = new LockerRobotManager(
                 sSizeLocker,
                 new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
                 new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
@@ -117,16 +117,32 @@ public class LockerRobotManagerTest {
     @Test
     void should_save_in_locker_when_save_bag_given_locker_robot_manager_manage_available_locker_and_robot_and_one_s_size_bag() {
         Locker locker = createSSizeLocker(5, 4);
-        LockerRobotManager robot = new LockerRobotManager(
+        LockerRobotManager manager = new LockerRobotManager(
                 locker,
                 new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
                 new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
         Bag preSaveBag = new Bag(BagSize.S);
 
-        Ticket ticket = robot.saveBag(preSaveBag);
+        Ticket ticket = manager.saveBag(preSaveBag);
 
         assertNotNull(ticket);
         Bag bag = locker.takeBag(ticket);
+        assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_save_in_primary_when_save_bag_given_locker_robot_manager_manage_available_locker_and_robot_and_one_m_size_bag() {
+        PrimaryLockerRobot primaryLockerRobot = new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M)));
+        LockerRobotManager manager = new LockerRobotManager(
+                createSSizeLocker(5, 4),
+                primaryLockerRobot,
+                new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
+        Bag preSaveBag = new Bag(BagSize.M);
+
+        Ticket ticket = manager.saveBag(preSaveBag);
+
+        assertNotNull(ticket);
+        Bag bag = primaryLockerRobot.takeBag(ticket);
         assertEquals(preSaveBag, bag);
     }
 }

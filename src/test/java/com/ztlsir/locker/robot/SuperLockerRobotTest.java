@@ -90,7 +90,7 @@ public class SuperLockerRobotTest {
 
     @Test
     void should_throw_config_failed_exception_when_config_1_s_size_locker_given_1_super_locker_robot() {
-        Locker sSizeLocker = new Locker(5, BagSize.L);
+        Locker sSizeLocker = new Locker(5, BagSize.S);
 
         ConfigFailedException exception = assertThrows(
                 ConfigFailedException.class,
@@ -221,7 +221,7 @@ public class SuperLockerRobotTest {
 
         IllegalTicketException exception = assertThrows(
                 IllegalTicketException.class,
-                () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.L)));
+                () -> robot.takeBag(new Ticket(Ticket.createId(), BagSize.S)));
         assertEquals(BAG_SIZE_MISMATCHING_MSG, exception.getMessage());
     }
 
