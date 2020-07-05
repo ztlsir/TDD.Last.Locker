@@ -33,6 +33,10 @@ public class SuperLockerRobot {
                 .saveBag(bag);
     }
 
+    public Bag takeBag(Ticket ticket) {
+        return this.lockers.get(0).takeBag(ticket);
+    }
+
     private boolean isSupportLockers(List<Locker> lockers) {
         return lockers.stream().anyMatch(this::isSupportLocker);
     }

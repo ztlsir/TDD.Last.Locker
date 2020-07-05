@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 存包失败，提示Locker已满
  * <p>
- * todo Given SuperLockerRobot管理2个L号Locker，一张包存在第一个Locker的有效票据
+ * done Given SuperLockerRobot管理2个L号Locker，一张包存在第一个Locker的有效票据
  * When 取包
  * Then 取包成功
  * <p>
@@ -178,5 +178,16 @@ public class SuperLockerRobotTest {
 
         LockerFullException exception = assertThrows(LockerFullException.class, () -> robot.saveBag(preSaveBag));
         assertEquals(LOCKER_FULL_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_take_bag_when_take_bag_given_super_manage_two_locker_and_one_useful_ticket_that_bag_is_saved_in_1st_locker() {
+        SuperLockerRobot robot = new SuperLockerRobot(asList(createLSizeLocker(6, 5), createLSizeLocker(6, 4)));
+        Bag preSaveBag = new Bag();
+        Ticket ticket = robot.saveBag(preSaveBag);
+
+        Bag bag = robot.takeBag(new Ticket(ticket.getSerialNo(), ticket.getBagSize()));
+
+        assertEquals(preSaveBag, bag);
     }
 }
