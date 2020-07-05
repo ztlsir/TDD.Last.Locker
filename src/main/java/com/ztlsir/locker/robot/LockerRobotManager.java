@@ -47,6 +47,13 @@ public class LockerRobotManager {
     }
 
     public Bag takeBag(Ticket ticket) {
-        return this.locker.takeBag(ticket);
+        switch (ticket.getBagSize()) {
+            case S:
+                return this.locker.takeBag(ticket);
+            case M:
+                return this.primaryLockerRobot.takeBag(ticket);
+        }
+
+        return null;
     }
 }

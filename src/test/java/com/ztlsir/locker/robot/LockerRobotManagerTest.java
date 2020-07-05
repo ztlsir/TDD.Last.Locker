@@ -54,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 取包
  * Then 取包成功
  * <p>
- * todo Given 一张LockerRobotManager管理的M号Locker有效票据
+ * done Given 一张LockerRobotManager管理的M号Locker有效票据
  * When 取包
  * Then 取包成功
  * <p>
@@ -207,6 +207,20 @@ public class LockerRobotManagerTest {
                 new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
                 new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
         Bag preSaveBag = new Bag(BagSize.S);
+        Ticket ticket = manager.saveBag(preSaveBag);
+
+        Bag bag = manager.takeBag(ticket);
+
+        assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_take_bag_when_take_bag_given_one_useful_m_size_ticket() {
+        LockerRobotManager manager = new LockerRobotManager(
+                createSSizeLocker(5, 4),
+                new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
+        Bag preSaveBag = new Bag(BagSize.M);
         Ticket ticket = manager.saveBag(preSaveBag);
 
         Bag bag = manager.takeBag(ticket);
