@@ -1,14 +1,16 @@
 package com.ztlsir.locker.robot;
 
 import com.ztlsir.locker.Locker;
+import com.ztlsir.locker.Ticket;
+import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * done Given 一个SuperLockerRobot
@@ -99,5 +101,18 @@ public class SuperLockerRobotTest {
                 ConfigFailedException.class,
                 () -> new SuperLockerRobot(Collections.singletonList(mSizeLocker)));
         assertEquals(CONFIG_FAILED_MSG, exception.getMessage());
+    }
+
+    @Test
+    void should_save_in_1st_locker_when_save_bag_given_super_manage_2_l_size_available_lockers_and_each_lockers_remain_is_equals() {
+        Locker firstLocker = new Locker(5, BagSize.L);
+        SuperLockerRobot robot = new SuperLockerRobot(asList(firstLocker, new Locker(5, BagSize.L)));
+        Bag preSaveBag = new Bag(BagSize.M);
+
+        Ticket ticket = robot.saveBag(preSaveBag);
+
+        assertNotNull(ticket);
+        Bag bag = firstLocker.takeBag(ticket);
+        assertEquals(preSaveBag, bag);
     }
 }
