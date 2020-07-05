@@ -5,12 +5,12 @@ import com.ztlsir.locker.Ticket;
 import com.ztlsir.locker.bag.Bag;
 import com.ztlsir.locker.bag.BagSize;
 import com.ztlsir.locker.exception.ConfigFailedException;
+import com.ztlsir.locker.exception.LockerFullException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-import static com.ztlsir.locker.fixture.LockerFixture.createLSizeLocker;
-import static com.ztlsir.locker.fixture.LockerFixture.createSSizeLocker;
+import static com.ztlsir.locker.fixture.LockerFixture.*;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * When 存包
  * Then 获得一张有效票据，包存到SuperLockerRobot管理的Locker中
  * <p>
- * todo Given LockerRobotManager管理的Locker已满，Robot都未满，一个S号包
+ * done Given LockerRobotManager管理的Locker已满，Robot都未满，一个S号包
  * When 存包
  * Then 存包失败，提示S号Locker已满
  * <p>
@@ -160,5 +160,18 @@ public class LockerRobotManagerTest {
         assertNotNull(ticket);
         Bag bag = superLockerRobot.takeBag(ticket);
         assertEquals(preSaveBag, bag);
+    }
+
+    @Test
+    void should_throw_locker_full_exception_when_save_bag_given_locker_robot_manager_manage_full_locker_and_available_robot_and_one_s_size_bag() {
+        Locker locker = createSSizeLocker(5, 0);
+        LockerRobotManager manager = new LockerRobotManager(
+                locker,
+                new PrimaryLockerRobot(Collections.singletonList(new Locker(5, BagSize.M))),
+                new SuperLockerRobot(Collections.singletonList(new Locker(5, BagSize.L))));
+        Bag preSaveBag = new Bag(BagSize.S);
+
+        LockerFullException exception = assertThrows(LockerFullException.class, () -> manager.saveBag(preSaveBag));
+        assertEquals(LOCKER_FULL_MSG, exception.getMessage());
     }
 }
