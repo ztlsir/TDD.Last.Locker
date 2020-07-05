@@ -39,7 +39,7 @@ public class PrimaryLockerRobot {
 
         return this.lockers.stream()
                 .filter(locker -> locker.contains(ticket))
-                .findFirst()
+                .findAny()
                 .orElseThrow(IllegalTicketException::new)
                 .takeBag(ticket);
     }

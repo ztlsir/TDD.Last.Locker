@@ -34,7 +34,11 @@ public class SuperLockerRobot {
     }
 
     public Bag takeBag(Ticket ticket) {
-        return this.lockers.get(0).takeBag(ticket);
+        return this.lockers.stream()
+                .filter(locker -> locker.contains(ticket))
+                .findAny()
+                .get()
+                .takeBag(ticket);
     }
 
     private boolean isSupportLockers(List<Locker> lockers) {
